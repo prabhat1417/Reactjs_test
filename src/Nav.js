@@ -1,3 +1,4 @@
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from './images/logo.png';
@@ -7,27 +8,20 @@ function Nav() {
   const [show, handleShow] = useState(false);
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
-  const [inputValue, setInputValue] = useState('');
 
   const handleClick = () => {
     navigate('/profile');
   };
 
   const handleClick2 = () => {
-    navigate('/');
+    navigate('/movie');
   };
 
   const handleClick3 = () => {
-    navigate('/tv');
+    navigate('/');
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (inputValue.trim() !== '') {
-      navigate(`/search?query=${encodeURIComponent(inputValue)}`);
-      setInputValue('');
-    }
-  };
+
 
   const transitionNavBar = () => {
     if (window.scrollY > 100) {
@@ -56,23 +50,26 @@ function Nav() {
         <div className="nav_links">
           <h2
             onClick={handleClick2}
-            className={location.pathname === '/' ? 'nav-link-active' : ''}
+            className={location.pathname === '/movie' ? 'nav-link-active' : ''}
           >
             Movies
           </h2>
           <h2
             onClick={handleClick3}
-            className={location.pathname === '/tv' ? 'nav-link-active' : ''}
+            className={location.pathname === '/' ? 'nav-link-active' : ''}
           >
             TV
           </h2>
-          <form onSubmit={handleSearch}>
-            <input className='searching'
-              type="text"
-              placeholder="Search..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
+          <form>
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Search..."
+              />
+              <button type="submit">
+              🔍
+              </button>
+            </div>
           </form>
         </div>
         <img

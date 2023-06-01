@@ -1,48 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import './Search.css';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import { API_KEY } from './Requests';
 
 function SearchResults() {
-  const location = useLocation();
-  const searchQuery = new URLSearchParams(location.search).get('query');
   const [results, setResults] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
-    const fetchSearchResults = async () => {
+    const fetchAllResults = async () => {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/search/multi?query=${encodeURIComponent(
-            searchQuery
-          )}&api_key=${API_KEY}&include_adult=false&language=en-US`
-        );
-        setResults(response.data.results);
+        const response = await axios.get('https://api.tvmaze.com/search/shows?q=all');
+        setResults(response.data);
       } catch (error) {
-        console.log('Error fetching search results:', error);
+        console.log('Error fetching results:', error);
       }
     };
 
-    if (searchQuery) {
-      fetchSearchResults();
-    }
-  }, [searchQuery]);
+    fetchAllResults();
+  }, []);
+  
+  const openDescription = (id) => {
+    navigate(`/description/${id}`);
+  };
 
   return (
-    <div className='search'>
+    <div className="search">
       <Nav />
       <div className="posters">
         {results.map((result) => (
-          <LazyLoadImage
-            className="poster"
-            key={result.id}
-            src={`https://image.tmdb.org/t/p/w500/${result.poster_path}`}
-            alt={result.title || result.name}
-            effect="blur"
-          />
+          <div key={result.show.id} className="poster">
+            <img src={result.show.image?.medium} alt={result.show.name} onClick={() => openDescription(result.show.id)} />
+          </div>
         ))}
       </div>
     </div>

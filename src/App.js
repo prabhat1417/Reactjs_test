@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
 import './App.css';
-import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
 import Login from './LoginScreen';
 import Description from './Description';
-import TV from './TV';
-import TV_Description from './tv_description';
 import Search from './Search'; // Import the Search component
 import { auth } from './Firebase.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, selectUser } from '../src/features/userSlice.js';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignInScreen from './SignInScreen';
+import Movie from './Movies';
 
 function App() {
   const user = useSelector(selectUser);
@@ -44,15 +42,11 @@ function App() {
           ) : (
             <>
               <Route path="/profile" element={<ProfileScreen />} />
-              <Route path="/" element={<HomeScreen />} />
+              <Route path="/" element={<Search />} />
               <Route path="/signin" element={<SignInScreen />} />
-              <Route path="/tv" element={<TV />} />
               <Route path="/description/:movieId" element={<Description />} />
-              <Route
-                path="/tv_description/:movieId"
-                element={<TV_Description />}
-              />
-              <Route path="/search" element={<Search />} /> // Add the Search component route
+              <Route path="/movie" element={<Movie />} />
+
             </>
           )}
         </Routes>
